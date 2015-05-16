@@ -7,16 +7,30 @@ using System.Threading.Tasks;
 namespace KSP_KISS_Mod {
 	public class CodeSet {
 
+		private struct OperationDetails {
+			public Operation op;
+			public string name;
+			public string description;
+
+			public OperationDetails(Operation op, string name, string description) {
+				this.op = op;
+				this.name = name;
+				this.description = description;
+			}
+		}
+
 		public delegate void Operation(ModuleComputerCore c);
 
-		private List<Operation> ops = new List<Operation>();
-		private List<string> names = new List<string>();
-		private List<string> descriptions = new List<string>();
+		private List<OperationDetails> ops = new List<OperationDetails>();
 		
 		public int Count { get { return ops.Count; } }
 
 		public Operation this[int index] {
-			get { return ops[index]; }
+			get { return ops[index].op; }
+		}
+
+		public string getName(int index) {
+			return ops[index].name;
 		}
 
 		/// <summary>
@@ -24,9 +38,10 @@ namespace KSP_KISS_Mod {
 		/// </summary>
 		/// <param name="op">The operation to add</param>
 		/// <returns>An index that can be used to access the operation</returns>
-		public int Add(Operation op) {
+		public int Add(string name, Operation op) {
+			OperationDetails deets = new OperationDetails(op, name, "No description");
 			int index = ops.Count;
-			ops.Add(op);
+			ops.Add(deets);
 			return index;
 		}
 
