@@ -33,17 +33,24 @@ namespace KSP_KISS_Mod {
 			return ops[index].name;
 		}
 
+		public byte Add(Operation op) {
+			string name = "" + ops.Count; // make name the index of this operation
+			return Add(name, op);
+		}
+
 		/// <summary>
 		/// Adds the operation to the global operation list, and returns an index that can be used to reference this operation in the future.
 		/// </summary>
 		/// <param name="op">The operation to add</param>
 		/// <returns>An index that can be used to access the operation</returns>
-		public int Add(string name, Operation op) {
-			OperationDetails deets = new OperationDetails(op, name, "No description");
-			int index = ops.Count;
+		public byte Add(string name, Operation op, string description = "No description") {
+			if (ops.Count == byte.MaxValue) {
+				throw new IndexOutOfRangeException("Too many operations in this CodeSet. The maximum number of operations is " + byte.MaxValue);
+			}
+			OperationDetails deets = new OperationDetails(op, name, description);
+			byte index = (byte) ops.Count;
 			ops.Add(deets);
 			return index;
 		}
-
 	}
 }
